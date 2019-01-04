@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: meice-client
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+#端口
+server:
+  port: 6908
+  context-path: /web/
+  ip: localhost
+
+  tomcat:
+    maxThreads: 300
+    minSpareThreads: 20
+    uri-encoding: UTF-8
+
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 5000
+
+#日志
+logging:
+  config: ./config/logback-local.xml
+
+management:
+  security:
+    enabled: false
+
+
+eureka:
+  client:
+    serviceUrl:
+      #注册中心地址
+      defaultZone: http://localhost:6900/eureka/
+  instance:
+    status-page-url: http://localhost:${server.port}${server.context-path}swagger-ui.html
+
+ribbon:
+  eureka:
+    enabled: true
+#swagger配置
+swagger:
+  scan: com.meice.meiceclent.controller
+  title: MEICE WEB API
+  description: MEICE WEB API
+  version: 1.0.0

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+	
+	<property name="LOG_PATH" value="logs" />
+	
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]) %-5level %logger{80} -%msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="application-service" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/application-service.log</file>
+	    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	      <level>INFO</level>   
+	    </filter>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/application-service.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<!-- 日志归档总大小超过这个数字会删除之前老的  -->
+			<totalSizeCap>1024MB</totalSizeCap>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]) %-5level %logger{80}-%msg%n</pattern>
+		</layout>
+	</appender>
+	
+	<appender name="application-error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/application-error.log</file>
+	    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+	      <level>WARN</level>   
+	    </filter>			
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/application-error.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+			<!-- 日志归档总大小超过这个数字会删除之前老的  -->
+			<totalSizeCap>1024MB</totalSizeCap>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%-20(%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread]) %-5level %logger{80}-%msg%n</pattern>
+		</layout>
+	</appender>
+
+	<logger name="com.ikuijia.demo.web" level="DEBUG" additivity="true">
+		<appender-ref ref="application-service" />
+		<appender-ref ref="application-error" />
+	</logger>
+
+	<logger name="com.ikuijia.cloud.common" level="DEBUG" additivity="true">
+		<appender-ref ref="application-service" />
+		<appender-ref ref="application-error" />
+	</logger>
+	
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>
